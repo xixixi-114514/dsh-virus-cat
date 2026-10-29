@@ -1,0 +1,7 @@
+# dsh-virus-cat 的 bundle patch：把桌面猫插件挂进 DSH 配置树
+#
+# 每个 entry 有 id（行标识）和 name（插件模块）。
+# id 必须全局唯一；name 解析到本包 package.json 的 main（lib/index.js，宿主半侧）。
+- insert:
+    - id: dsh-virus-cat
+      name: 'dsh-virus-cat'

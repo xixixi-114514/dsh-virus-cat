@@ -1,0 +1,16 @@
+{
+  "name": "dsh-virus-cat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "一只在桌面上乱飘的猫，点它会喵，点多了会变成午夜植物铺里的那种东西",
+  "type": "module",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

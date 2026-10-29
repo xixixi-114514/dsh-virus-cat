@@ -1,0 +1,7 @@
+{
+  "name": "dsh-virus-cat-helper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop overlay helper for dsh-virus-cat",
+  "main": "main.js"
+}

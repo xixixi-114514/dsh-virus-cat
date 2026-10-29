@@ -1,0 +1,18 @@
+node_modules/
+helper.log
+helper-run.log
+helper-boot.log
+runtime/electron-helper/settings.json
+*.log
+
+# 旧版分段音频（已被 scene2345678.mp3 单轨取代，不再使用）
+runtime/electron-helper/assets/audio/scene2345.mp3
+runtime/electron-helper/assets/audio/scene23456.mp3
+runtime/electron-helper/assets/audio/scene234567.mp3
+runtime/electron-helper/assets/audio/stage5.mp3
+runtime/electron-helper/assets/audio/stage6.mp3
+runtime/electron-helper/assets/audio/stage7.mp3
+runtime/electron-helper/assets/audio/stage8.mp3
+
+.DS_Store
+Thumbs.db
