@@ -2277,10 +2277,40 @@ app.whenReady().then(() => {
   lastTick = performance.now();
   ticker = setInterval(tick, 16);
 
-  // 宿主断开（DSH 侧管道关闭）→ 自动退出
+  // 宿主断开（DSH 侧管道关闭）→ 自动退出。
+  // 注意：stdin 的 'end' 会在管道“本来就没数据”时立刻触发（Node 里被 spawn 的
+  // Electron 主进程 stdin 常常一启动就 EOF），所以只信 'close'，并且要确认这根
+  // 管道确实曾经打开过、且宿主进程已经不在，才退出——否则插件版一启动就自杀。
   if (process.env.DSH_VC_STANDALONE !== '1') {
-    process.stdin.on('close', () => quit('stdin-closed'));
-    process.stdin.on('end', () => quit('stdin-end'));
+    let stdinWasOpen = false;
+    const hostPid = Number(process.env.DSH_VC_HOST_PID || 0);
+    const hostGone = () => {
+      if (!hostPid) return false;
+      try {
+        process.kill(hostPid, 0);
+        return false;
+      } catch (e) {
+        return e && e.code === 'ESRCH';
+      }
+    };
+    process.stdin.on('readable', () => {
+      stdinWasOpen = true;
+      // 宿主不会给我们发数据，读出来丢掉即可（保持管道不被填满）
+      while (process.stdin.read() !== null) {
+        /* discard */
+      }
+    });
+    process.stdin.on('close', () => {
+      if (!stdinWasOpen) {
+        log('[virus-cat] stdin closed before any data; keeping alive');
+        return;
+      }
+      if (!hostGone()) {
+        log('[virus-cat] stdin closed but host alive; keeping alive');
+        return;
+      }
+      quit('stdin-closed');
+    });
     process.stdin.resume();
   }
 

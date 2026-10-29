@@ -30,6 +30,8 @@ powershell -ExecutionPolicy Bypass -File install.ps1
 脚本会做三件事：把仓库复制到 `%USERPROFILE%\.dsh\dsh-virus-cat`、在 `%USERPROFILE%\.dsh\profiles\desktop\node_modules` 建目录联接、把 `dsh-virus-cat` 写进该 profile 的 `bundles` 与 `dependencies`。
 装在别的 profile 上用 `-ProfileName 名字`；卸载用 `-Uninstall`。
 
+> ⚠️ **改了代码要重跑一次 `install.ps1`**：DSH（Electron）加载插件时会先 `fs.realpath` 解析目录联接，拿到的是 `%USERPROFILE%\.dsh\dsh-virus-cat` 那份**真实副本**，所以「联接 = 改源码即时生效」只在独立版（`启动猫.cmd` 直接读源码）成立。插件版想拿到新代码，重跑一次脚本把副本刷一下即可（它只复制文件，不会重复注册）。
+
 **方式二：只要独立版（不装插件）**
 
 ```powershell
@@ -45,7 +47,7 @@ cd dsh-virus-cat
 | 方式 | 操作 |
 | --- | --- |
 | 独立运行 | 双击 `启动猫.cmd`（正常模式）或 `启动猫-绿幕录制.cmd`（绿幕模式，录屏用）。脚本会先关掉已经在跑的猫，不会出现两只 |
-| 作为 DSH 插件 | 已在 `~/.dsh/profiles/desktop` 里注册，**重启 DSH** 后自动启动，不用点脚本 |
+| 作为 DSH 插件 | 已在 `~/.dsh/profiles/desktop` 里注册，**重启 DSH** 后自动启动，不用点脚本。改了代码要重跑 `install.ps1` 才会生效 |
 
 猫在桌面上的操作：
 - **拖动**：按住猫身拖到任意位置（按下后移动超过 8px 才算拖，不然算点击），松手有速度会甩出去并 Q 弹反弹

@@ -92,6 +92,10 @@ if (Test-Path -LiteralPath $link) {
 }
 cmd /c mklink /J "$link" "$TargetDir" | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "创建目录联接失败（需要管理员权限或已存在同名目录）" }
+# 注：DSH（Electron）加载 bundle 时会先 fs.realpath，junction 会被解析成真实目录。
+# 所以 $TargetDir 里必须是一份完整可用的副本 —— 改了源码后要重跑一次
+#   powershell -ExecutionPolicy Bypass -File install.ps1
+# 才能让插件版拿到新代码（双击 .cmd 的独立版直接读源码，不受影响）。
 
 Write-Step "写入 profile 的 bundles / dependencies"
 if ($bundles -notcontains $PkgName) { $bundles = @($bundles + $PkgName) }
