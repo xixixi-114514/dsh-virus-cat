@@ -1,6 +1,44 @@
 # dsh-virus-cat 🐈‍⬛
 
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078d4.svg)](#)
+[![electron](https://img.shields.io/badge/electron-30%2B-47848f.svg)](#)
+
 一只住在桌面上的猫：平时蹲在角落，点它会喵；连着点 9 下就"失控"，按一条 37.6 秒的音轨演完整段（消失 → 视频 → 上升 → 乱撞 → 猫堆 → 三只分身 → 四只分身 → 消失），演完藏 1.4 秒再回到原位。
+
+<p align="center">
+  <img src="docs/demo-01-cat.png" width="45%" alt="待机的小猫">
+  <img src="docs/demo-02-rise.png" width="45%" alt="演出中：发光上升">
+</p>
+<p align="center">
+  <img src="docs/demo-03-clones.png" width="45%" alt="四只分身">
+  <img src="docs/demo-04-menu.png" width="45%" alt="设置面板">
+</p>
+
+> 截图仅示意。素材（猫图 / 视频 / 音频）随仓库提供，可自行替换（见下文「换素材」）。
+
+## 安装
+
+**方式一：一键脚本（推荐）**
+
+```powershell
+git clone https://github.com/xixixi-114514/dsh-virus-cat.git
+cd dsh-virus-cat
+powershell -ExecutionPolicy Bypass -File install.ps1
+```
+
+脚本会做三件事：把仓库复制到 `%USERPROFILE%\.dsh\dsh-virus-cat`、在 `%USERPROFILE%\.dsh\profiles\desktop\node_modules` 建目录联接、把 `dsh-virus-cat` 写进该 profile 的 `bundles` 与 `dependencies`。
+装在别的 profile 上用 `-ProfileName 名字`；卸载用 `-Uninstall`。
+
+**方式二：只要独立版（不装插件）**
+
+```powershell
+git clone https://github.com/xixixi-114514/dsh-virus-cat.git
+cd dsh-virus-cat
+.\启动猫.cmd
+```
+
+需要本机有 Electron（默认用 `%USERPROFILE%\.dsh\electron\electron.exe`，可用环境变量 `DSH_VC_ELECTRON` 指定）。
 
 ## 怎么用
 
@@ -107,6 +145,8 @@
 
 ```
 dsh-virus-cat/
+├─ install.ps1                                    ← 一键装进 DSH profile（-Uninstall 卸载）
+├─ LICENSE / docs/                                ← MIT 协议、截图
 ├─ 启动猫.cmd / 启动猫-绿幕录制.cmd / 打开音效文件夹.cmd
 ├─ package.json / cordis.patch.yml / lib/index.js   ← DSH 插件外壳
 └─ runtime/electron-helper/
@@ -121,6 +161,19 @@ dsh-virus-cat/
       ├─ audio/scene2345678.mp3  37.6s 整条音轨
       └─ audio/sounds/       ← 放你自己的喵叫 / 音效（自动出现在菜单「叫声」里）
 ```
+
+## 换素材
+
+| 想换什么 | 放哪 |
+| --- | --- |
+| 待机的小猫 | 覆盖 `runtime/electron-helper/assets/cat.png`（透明背景 PNG，建议竖图 400~600px 高） |
+| 第一段 / 旋转视频 | 覆盖 `assets/video/spin1.mp4`、`spin2.mp4`（**纯绿背景** `#00fe00`，程序会在播放时实时抠掉绿色） |
+| 演出音轨 | 覆盖 `assets/audio/scene2345678.mp3`，然后按第 24.14s / 25.73s / 28.71s / 31.94s / 35.22s 这几个位置改 `main.js` 顶部的 `DASH_BASE` / `AUDIO4_MS` / `AUDIO5_MS` / `AUDIO6_MS` / `AUDIO7_MS` / `AUDIO8_MS` |
+| 喵叫 | 丢进 `assets/audio/sounds/`（见上文「加自己的音效」） |
+
+## 素材来源
+
+仓库里的猫图、视频、音轨来自作者自己的剪辑素材，仅用于演示；MIT 协议只覆盖代码，**不覆盖这些素材**。二次分发请自行替换成你有权使用的素材。
 
 ## 已知限制
 
