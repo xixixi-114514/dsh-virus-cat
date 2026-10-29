@@ -436,7 +436,6 @@ function stepCat(cat, dt) {
     cat.keepBottom = true;
     if (Date.now() - (cat.dragLogAt || 0) > 280) {
       cat.dragLogAt = Date.now();
-      log('[virus-cat] bottomdiag keepBottom=' + cat.keepBottom + ' waH=' + wa.height + ' halfH=' + halfH + ' cy=' + cat.cy);
       log('[virus-cat] drag pick=' + cat.cx + ',' + cat.cy + ' raw=' + px + ',' + py + ' U=' + U + ' half=' + halfW + 'x' + halfH);
     }
     cat.vx = 0;
